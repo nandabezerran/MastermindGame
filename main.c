@@ -11,7 +11,7 @@
 
 int main(int argc, char *argv[]){
 
-	//Vetor base com as cores possiveis
+	//Base array with all the color options.
 	Cor base[6];
 	base[0].cor = "vm";
 	base[1].cor = "vd";
@@ -34,7 +34,7 @@ int main(int argc, char *argv[]){
 	printf("Por favor, digite o tamanho da senha entre 4 a 12 \n>>> ");
 	scanf("%d",&N);
 
-	//Validacao entradas
+	//Entry validation
 	while(PC < 3 || PC > 6){
 		
 			printf("Possibilidade de cores invalida digite novamente outra entre 3 e 6:\n>>> ");
@@ -53,7 +53,7 @@ int main(int argc, char *argv[]){
 			scanf ("%d", &N);	
 		
 	}
-	//Mostrando para o usuario as cores disponiveis de acordo com PC
+	//Showing to the user all the available colors according to the PC
 	if (PC == 3){
 		printf("Entre uma combina��o de %d elementos dentre as 3 cores seguintes\n%s- vm: vermelho\n%s- vd: verde\n%s- am: amarelo\n", N, COR_VERMELHO, COR_VERDE, COR_AMARELO);
 	}
@@ -71,30 +71,31 @@ int main(int argc, char *argv[]){
 
 	}
 
-	//Random senha computador
-	vetcomp = (int *)malloc(N * sizeof(int)); //Aloca��o do vetor de inteiros para a senha do computador
+	//Generating the random password for the computer
+	vetcomp = (int *)malloc(N * sizeof(int)); //Allocating memory for the int array;
 	srand((unsigned)time(NULL));
-	while ((iaux) < N){//La�o para a senha do computador ter o tamanho indicado pelo usuario
+	while ((iaux) < N){//Loop for the computer's password have the same length that the user informed;
 		
-		cod = (rand()%PC);//Randomiza��o de cada elemento da senha do computador, nas possibilidades de cores indicadas pelo usuario
-		vetcomp[iaux] = cod;//Associa��o de cada senha
+		cod = (rand()%PC);//Randomization of every element from the computer password, using the number of colors that
+		                    // the showed by the user;
+		vetcomp[iaux] = cod;//Adding each element of the password to the array;
 		iaux++;
 	}
 	
 
-	//Iniciando lista usuario
+	//Starting the user's list;
 	psusu = (senhausu *) malloc(sizeof(senhausu *));
 	iniciarListaUsu(psusu);
 	
 
-	//La�o para rodar o jogo ate acabar as tentativas
+	//Loop to run the game until the end of the attempts;
 	contTent = 0;
 	while (contTent < Lim){
 		contTent++;
 
 
-	//Alocando a senha
-		strusu = ((char*) malloc(((N*2 )+ ((N-1) * 2)) * sizeof(char)));//Alocando a string para senha do usuario
+	//Allocating memory for the user's password;
+		strusu = ((char*) malloc(((N*2 )+ ((N-1) * 2)) * sizeof(char)));
 		
 		if (strusu == NULL){
 			printf("Mem�ria insuficiente");
@@ -102,7 +103,7 @@ int main(int argc, char *argv[]){
 		}
 
 		
-	//Lendo a senha do usuario
+	//Reading user's password
 		else{
 			
 			int contsi = 1;//Inicialiaza��o do contador que indica se o usuario ja colocou aquela senha
@@ -120,7 +121,7 @@ int main(int argc, char *argv[]){
 						scanf("%[^\n]s",strusu);
 						fflush(stdin);
 				
-	//Quebrando a senha do usuario
+	//Spliting user's password
 				
 				
 						vetusu = (int *)malloc(N * sizeof(int));//Aloca��o do vetor de inteiros para a senha do usuario
@@ -131,9 +132,9 @@ int main(int argc, char *argv[]){
 						while(separador != NULL){	
 							for(iaux = 0; iaux < 6; iaux++){
 								if (strcmp(base[iaux].cor, separador) == 0){
-									vetusu[i] = iaux;//Associando cada cor a um numero para formar o vetor senha do usuario
+									vetusu[i] = iaux;
 									contquebras++;
-			//Mostrando a propria senha para o usuario
+			//Showing the password to the user
 									if (iaux == 0){
 										printf("%so ", COR_VERMELHO);							
 									}
@@ -173,15 +174,15 @@ int main(int argc, char *argv[]){
 				
 
 
-	//Transformando o a senha do usuario em um unico long int, para salvar na lista encadeada
+	//Trasnforming the user's password in a long int
 			auxvetusu=0;//zerando a variavel
 			for (i=0; i<N; i++){
-				auxvetusu += (pow(10,(6-i))*(vetusu[i])) + 1;//Aqui, uma na variavel aux � formado um unico long int correspondente a o vetor senha usuario
-				
+				auxvetusu += (pow(10,(6-i))*(vetusu[i])) + 1;//Here we create a long int to represent the user password;
+
 			}
 
-	//Buscando se essa senha ja foi utilizada
-			contsi = buscarlista(psusu, auxvetusu);//Se a senha for encontrada retorna 1, se n�o retorna 0
+	//Checking if the password was already used;
+			contsi = buscarlista(psusu, auxvetusu);//If the password was found it retorns 1, otherwise 0;
 					
 			if(contsi == 1){
 				printf("%s A senha ja existe, tente novamente\n", COR_NORMAL);
@@ -189,13 +190,12 @@ int main(int argc, char *argv[]){
 			
 		}
 
-	//Inserindo a senha do usuario
-		inserirlista(&psusu, auxvetusu);//Inserindo a senha somente se nao for encontrada na lista
+	//Inserting the user password only if it wasn't found before;
+		inserirlista(&psusu, auxvetusu);
 	
-	//Comparando as senhas e mostrando ao usuario ! e @;
-	// Mostrar !'s e @'s de modo que faz a verifica��o de caso a cor seja a mesma e na mesma posi��o, mostrar @
-	// e caso for uma cor igual e em coloca�ao diferente por o !, sendo que caso seja posto um ou outro
-	// a verica��oda proxima cor ser� a partir da pr�xima j� que a mesma ja est� no local certo
+	//Comparing the passwords and showing to the user: ! and @;
+	// If the color is the same and it is at the same position a @ is shown, if it is the same color but in a different
+	// position a ! is shown. This is shown for every element at the password.
 		int contig, ind, ind1, buscaSenhaComp;
 		contig=0;
 		buscaSenhaComp = 0;
@@ -220,7 +220,7 @@ int main(int argc, char *argv[]){
 			}
 		}
 				
-	//Mostrar ao usuario se acertou ou erro
+	//Showing to the user if he got it right or wrong;
 
 		if (contig == N){
 			printf("\nVoc� acertou em %d tentativas :D\n", contTent);
@@ -234,7 +234,7 @@ int main(int argc, char *argv[]){
 														
 		}
 
-		free(vetusu);// liberando o vetor da senha do usuario
+		free(vetusu);
 							
 		}
 		
