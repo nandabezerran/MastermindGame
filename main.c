@@ -37,7 +37,7 @@ int main(int argc, char *argv[]){
 	//Validacao entradas
 	while(PC < 3 || PC > 6){
 		
-			printf("Possibilidade de cores inv�lida digite novamente outra entre 3 e 6:\n>>> ");
+			printf("Possibilidade de cores invalida digite novamente outra entre 3 e 6:\n>>> ");
 			scanf("%d",&PC);
 		
 	}
